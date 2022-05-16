@@ -40,6 +40,14 @@ class ServerTester(unittest.TestCase):
                 expected_name = template.name
                 self.assertEqual(expected_name, "index.html")
 
+    def test__clubs_rendered(self):
+        with server.app.test_client() as client:
+            with captured_templates(server.app) as templates:
+                client.get("/clubs")
+                template, _ = templates[0]
+                expected_name = template.name
+                self.assertEqual(expected_name, "clubs.html")
+
     def test__show_summary__welcome_rendered(self):
         with server.app.test_client() as client:
             with captured_templates(server.app) as templates:
