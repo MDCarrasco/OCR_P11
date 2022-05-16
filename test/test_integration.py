@@ -43,7 +43,7 @@ class ServerTester(unittest.TestCase):
     def test__clubs_rendered(self):
         with server.app.test_client() as client:
             with captured_templates(server.app) as templates:
-                client.get("/clubs")
+                client.post("/clubs", data={"email": "admin@irontemple.com"})
                 template, _ = templates[0]
                 expected_name = template.name
                 self.assertEqual(expected_name, "clubs.html")
@@ -160,7 +160,7 @@ class ServerTester(unittest.TestCase):
                 expected_club = {
                     "name": "Simply Lift",
                     "email": "john@simplylift.co",
-                    "points": "13"
+                    "points": "14"
                 }
                 self.assertEqual(expected_club, context["club"])
 
@@ -199,7 +199,7 @@ class ServerTester(unittest.TestCase):
                 expected_club = {
                     "name": "Simply Lift",
                     "email": "john@simplylift.co",
-                    "points": "12"
+                    "points": "13"
                 }
                 self.assertEqual(expected_club, context["club"])
 
