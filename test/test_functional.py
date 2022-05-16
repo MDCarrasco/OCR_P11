@@ -33,7 +33,8 @@ class ServerTester(unittest.TestCase):
             for expected_competition in server.competitions:
                 self.assertIn(expected_competition["name"], response_str)
                 self.assertIn(f"""Date: {expected_competition["date"]}""", response_str)
-                self.assertIn(f"""Number of Places: {expected_competition["numberOfPlaces"]}""", response_str)
+                if not expected_competition["is_past"]:
+                    self.assertIn(f"""Number of Places: {expected_competition["numberOfPlaces"]}""", response_str)
 
     def test__sad__login(self):
         """
@@ -59,11 +60,11 @@ class ServerTester(unittest.TestCase):
             Summary page is displayed showing "Great-booking complete!" and updated number of points/competition list
         """
         with server.app.test_client() as client:
-            response = client.get("/book/Spring%20Festival/Simply%20Lift")
+            response = client.get("/book/New%20Competition/Simply%20Lift")
             self.assertEqual("200 OK", response.status)
 
             competition = next(
-                (competition for competition in server.competitions if competition["name"] == "Spring Festival"),
+                (competition for competition in server.competitions if competition["name"] == "New Competition"),
                 None
             )
             self.assertTrue(competition)
@@ -82,7 +83,7 @@ class ServerTester(unittest.TestCase):
                 "/purchasePlaces",
                 data=
                 {
-                    "competition": "Spring Festival",
+                    "competition": "New Competition",
                     "club": "Simply Lift",
                     "places": "1"
                 }

@@ -1,3 +1,4 @@
+import datetime
 import unittest
 from unittest.mock import patch
 from unittest.mock import mock_open
@@ -54,6 +55,11 @@ class ServerTester(unittest.TestCase):
                     "name": "competition2",
                     "date": "2020-04-27 11:00:00",
                     "numberOfPlaces": "22"
+                },
+                {
+                    "name": "competition2",
+                    "date": "2022-12-27 11:00:00",
+                    "numberOfPlaces": "23"
                 }
             ]
     }"""
@@ -63,15 +69,24 @@ class ServerTester(unittest.TestCase):
         expected_output = [
             {
                 "name": "competition1",
-                "date": "2020-03-27 10:00:00",
-                "numberOfPlaces": "21"
+                "date": datetime.datetime(2020, 3, 27, 10, 0),
+                "numberOfPlaces": "21",
+                "is_past": True
             },
             {
 
                 "name": "competition2",
-                "date": "2020-04-27 11:00:00",
-                "numberOfPlaces": "22"
-            }
+                "date": datetime.datetime(2020, 4, 27, 11, 0),
+                "numberOfPlaces": "22",
+                "is_past": True
+        },
+            {
+
+                "name": "competition2",
+                "date": datetime.datetime(2022, 12, 27, 11, 0),
+                "numberOfPlaces": "23",
+                "is_past": False
+        }
         ]
         output = server.load_competitions()
         self.assertEqual(expected_output, output)
