@@ -31,6 +31,13 @@
         {% endfor %}
     </ul>
     {%endwith%}
-
+    <br/><br/>
+    <hr/>
+    <form method="post" action="clubs" class="inline">
+        <input type="hidden" name="email" value="{{club['email']}}">
+        <button type="submit" name="submit_param" value="submit_value" class="link-button">
+            View all registered clubs and respective point count
+        </button>
+    </form>
 </body>
 </html>

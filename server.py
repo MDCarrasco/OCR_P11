@@ -58,7 +58,9 @@ def purchase_places():
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
-# TODO: Add route for points display
+@app.route('/clubs', methods=['POST'])
+def display_clubs():
+    return render_template('clubs.html', clubs=clubs, email=request.form['email'])
 
 
 @app.route('/logout')
