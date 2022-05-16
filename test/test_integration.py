@@ -181,7 +181,7 @@ class ServerTester(unittest.TestCase):
                 expected_club = {
                     "name": "Simply Lift",
                     "email": "john@simplylift.co",
-                    "points": "13"
+                    "points": "12"
                 }
                 self.assertEqual(expected_club, context["club"])
 

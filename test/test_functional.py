@@ -39,7 +39,6 @@ class ServerTester(unittest.TestCase):
             response = client.post("/showSummary", data={"email": "stuff@mail.com"})
             self.assertEqual("200 OK", response.status)
 
-    # This does not pass !
     def test__happy__booking(self):
         """
         Plot:
