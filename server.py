@@ -56,6 +56,7 @@ def book(competition, club):
 def purchase_places():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
+    places_max_limit = 12
     places_required = int(request.form['places'])
     places_remaining = int(competition['numberOfPlaces'])
     if places_required > places_remaining:
@@ -63,6 +64,9 @@ def purchase_places():
         return render_template('booking.html', club=club, competition=competition)
     elif places_required > int(club['points']):
         flash(f"Cannot book more places than points you have ({club['points']}).")
+        return render_template('booking.html', club=club, competition=competition)
+    elif places_required > places_max_limit:
+        flash(f"Cannot book more than max limit ({places_max_limit}).")
         return render_template('booking.html', club=club, competition=competition)
     else:
         flash('Great-booking complete!')
