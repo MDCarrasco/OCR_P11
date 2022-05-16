@@ -27,7 +27,6 @@ class ServerTester(unittest.TestCase):
                 self.assertIn(f"""Date: {expected_competition["date"]}""", response_str)
                 self.assertIn(f"""Number of Places: {expected_competition["numberOfPlaces"]}""", response_str)
 
-    # This does not pass !
     def test__sad__login(self):
         """
         Plot:

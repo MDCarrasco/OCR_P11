@@ -12,5 +12,8 @@
         <input type="email" name="email" id=""/>
         <button type="submit">Enter</button>
     </form>
+    {% for mesg in get_flashed_messages() %}
+        <h1>{{ mesg }}</h1>
+    {% endfor %}
 </body>
 </html>
