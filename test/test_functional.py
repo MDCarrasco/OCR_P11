@@ -95,6 +95,53 @@ class ServerTester(unittest.TestCase):
                     self.assertEqual(expected_competition_number_of_places, expected_competition["numberOfPlaces"])
                 self.assertIn(f"""Number of Places: {expected_competition["numberOfPlaces"]}""", response_str)
 
+        def test__sad__booking__3(self):
+            """
+            Plot:
+                A logged in user wants to book more  places for a competition than maximum allowed
+                Summary page is displayed showing the user's mail, number of points left and a competition list
+                The user picks a competition
+            Steps:
+                Booking page is displayed asking the user for a number of places to book
+                The user enters a number (higher than maximum allowed) and clicks "book"
+            Result:
+                Summary page is displayed showing "Great-booking complete!" and updated number of points/competition list
+            """
+            with server.app.test_client() as client:
+                response = client.get("/book/Spring%20Festival/Simply%20Lift")
+                self.assertEqual("200 OK", response.status)
+
+                competition = next(
+                    (competition for competition in server.competitions if competition["name"] == "Spring Festival"),
+                    None
+                )
+                self.assertTrue(competition)
+
+                response_str = response.data.decode("utf-8")
+                self.assertIn(competition["name"], response_str)
+                self.assertIn(f"""Places available: {competition["numberOfPlaces"]}""", response_str)
+
+                user = next((club for club in server.clubs if club['name'] == "Simply Lift"), None)
+                self.assertTrue(user)
+
+                expected_competition_number_of_places = competition["numberOfPlaces"]
+                expected_user_points = user["points"]
+
+                response = client.post(
+                    "/purchasePlaces",
+                    data=
+                    {
+                        "competition": "Spring Festival",
+                        "club": "Simply Lift",
+                        "places": "26"
+                    }
+                )
+
+                response_str = response.data.decode("utf-8")
+                self.assertIn(f"Cannot book more places than max limit ({expected_competition_number_of_places})", response_str)
+                self.assertIn(f"Places available: {expected_competition_number_of_places}", response_str)
+                self.assertIn(f"Club points: {expected_user_points}", response_str)
+
 
 if __name__ == "__main__":
     unittest.main()
