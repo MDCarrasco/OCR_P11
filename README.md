@@ -49,3 +49,11 @@
     We also like to show how well we're testing, so there's a module called 
     [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) you should add to your project.
 
+    Coverage commands:
+   1. coverage run -m unittest discover
+   2. coverage html
+   
+    Locust commands:
+   1. ./run_locust_multi_core.sh
+   2. ps -ef | grep "locustfile.py --" | awk '{print $2}' | tr '\n' ' '
+   3. kill list of pids
