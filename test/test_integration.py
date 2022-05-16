@@ -1,3 +1,4 @@
+import datetime
 import unittest
 from contextlib import contextmanager
 from flask import template_rendered
@@ -121,13 +122,21 @@ class ServerTester(unittest.TestCase):
                 expected_competitions = [
                     {
                         "name": "Spring Festival",
-                        "date": "2020-03-27 10:00:00",
-                        "numberOfPlaces": "25"
+                        "date": datetime.datetime(2020, 3, 27, 10, 0),
+                        "numberOfPlaces": "25",
+                        "is_past": True
                     },
                     {
                         "name": "Fall Classic",
-                        "date": "2020-10-22 13:30:00",
-                        "numberOfPlaces": "13"
+                        "date": datetime.datetime(2020, 10, 22, 13, 30),
+                        "numberOfPlaces": "13",
+                        "is_past": True
+                    },
+                    {
+                        "name": "New Competition",
+                        "date": datetime.datetime(2022, 12, 12, 14, 0),
+                        "numberOfPlaces": "25",
+                        "is_past": False
                     }
                 ]
                 self.assertEqual(expected_competitions, context["competitions"])
@@ -157,8 +166,9 @@ class ServerTester(unittest.TestCase):
                 _, context = templates[0]
                 expected_competition = {
                     "name": "Spring Festival",
-                    "date": "2020-03-27 10:00:00",
-                    "numberOfPlaces": "25"
+                    "date": datetime.datetime(2020, 3, 27, 10, 0),
+                    "numberOfPlaces": "25",
+                    "is_past": True
                 }
                 self.assertEqual(expected_competition, context["competition"])
 
@@ -206,14 +216,22 @@ class ServerTester(unittest.TestCase):
                 expected_competitions = [
                     {
                         "name": "Spring Festival",
-                        "date": "2020-03-27 10:00:00",
+                        "date": datetime.datetime(2020, 3, 27, 10, 0),
                         # one place booked in this test
-                        "numberOfPlaces": "24"
+                        "numberOfPlaces": "24",
+                        "is_past": True
                     },
                     {
                         "name": "Fall Classic",
-                        "date": "2020-10-22 13:30:00",
-                        "numberOfPlaces": "13"
+                        "date": datetime.datetime(2020, 10, 22, 13, 30),
+                        "numberOfPlaces": "13",
+                        "is_past": True
+                    },
+                    {
+                        "name": "New Competition",
+                        "date": datetime.datetime(2022, 12, 12, 14, 0),
+                        "numberOfPlaces": "25",
+                        "is_past": False
                     }
                 ]
                 self.assertEqual(expected_competitions, context["competitions"])

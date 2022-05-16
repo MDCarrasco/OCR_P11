@@ -1,3 +1,4 @@
+import datetime
 import json
 from flask import flash
 from flask import Flask
@@ -16,6 +17,13 @@ def load_clubs():
 def load_competitions():
     with open('competitions.json') as comps:
         list_of_competitions = json.load(comps)['competitions']
+        date_format = "%Y-%m-%d %H:%M:%S"
+        for competition in list_of_competitions:
+            competition['date'] = datetime.datetime.strptime(competition["date"], date_format)
+            if competition['date'] < datetime.datetime.now():
+                competition['is_past'] = True
+            else:
+                competition['is_past'] = False
         return list_of_competitions
 
 
@@ -53,7 +61,7 @@ def purchase_places():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     places_required = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
+    competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - places_required)
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
